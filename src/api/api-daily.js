@@ -1,21 +1,29 @@
-import axios from 'axios'
-
-const appid = '02efdd64bdc14b279bc91d9247db4722'
-const url = 'https://api.openweathermap.org/data/2.5/weather'
-// const icons = ['http://openweathermap.org/img/wn/', '@2x.png']
-const params = { units: 'metric', lang: 'kr', appid }
-
-const apiDaily = options => {
-  params.lang = options.lang || 'kr'
-  if (options.id) {
-    params.id = options.id
-  } else if (options.lat && options.lon) {
-    params.lat = options.lat
-    params.lon = options.lon
-  } else {
-    throw new Error('Error')
-  }
-  return axios.get(url, { params })
+const apiCoords = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(({ coords }) => {
+      resolve({
+        lat: coords.latitude,
+        lon: coords.longitude
+      })
+    }, (err) => {
+      reject(err)
+    })
+  })
 }
 
-export default apiDaily
+const apiWatchCoords = (accuracy = false) => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.watchPosition(({ coords }) => {
+      resolve({
+        lat: coords.latitude,
+        lon: coords.longitude
+      })
+    }, (err) => {
+      reject(err)
+    }, {
+      enableHighAccuracy: accuracy
+    })
+  })
+}
+
+export { apiCoords, apiWatchCoords }
