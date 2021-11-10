@@ -1,0 +1,35 @@
+<script>
+  //High Order Function - 고차함수
+
+  function addFn(a, b) {
+    var v = a + b;
+    console.log('SUM => ', v)
+  }
+
+  function subFn(a, b) {
+    var v = a - b;
+    console.log('SUB => ', v)
+  }
+
+
+  //인자로 함수를 받아서 함수를 리턴하는 함수
+
+  function sum(a, b) {
+    return a + b;
+  }
+
+  function sub(a, b) {
+    return a - b;
+  }
+
+  function withCalulator(calcFn) {
+    return function (a, b, title) {
+      var v = calcFn(a, b);
+      console.log(title, '=>', v)
+    }
+  }
+
+  withCalulator(sum)(10, 20, 'SUM');
+
+
+</script>
